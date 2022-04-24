@@ -7,9 +7,8 @@
                 <div class="card-header">{{ __('Registrar producto') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('registrarProducto') }}">
+                    <form method="POST" action="{{ route('productos.store') }}">
                         @csrf
-
                         <div class="row mb-3">
                             <label for="nombreProducto" class="col-md-4 col-form-label text-md-end">{{ __('Nombre del producto') }}</label>
                             <div class="col-md-6">
@@ -35,7 +34,12 @@
                         <div class="row mb-3">
                             <label for="categoriaProducto" class="col-md-4 col-form-label text-md-end">{{ __('Categoria del producto') }}</label>
                             <div class="col-md-6">
-                                <input id="categoriaProducto" type="text" class="form-control @error('categoriaProducto') is-invalid @enderror" name="categoriaProducto" value="{{ old('categoriaProducto') }}" required autofocus>
+                                <select for="categoriaProducto" id="categoriaProducto" name="categoriaProducto" required class="form-select" aria-label="Default select example">
+                                    <option selected disabled value="">Seleccionar categoria</option>
+                                    @foreach ($categorias as $categoria)
+                                        <option value="{{$categoria->id}}" >{{$categoria->nombre}}</option>
+                                    @endforeach
+                                  </select>
                                 @error('categoriaProducto')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -46,7 +50,12 @@
                         <div class="row mb-3">
                             <label for="sucursalProducto" class="col-md-4 col-form-label text-md-end">{{ __('Sucursal donde se encuentra el producto') }}</label>
                             <div class="col-md-6">
-                                <input id="sucursalProducto" type="text" class="form-control @error('sucursalProducto') is-invalid @enderror" name="sucursalProducto" value="{{ old('sucursalProducto') }}" required autofocus>
+                                <select required for="sucursalProducto" id="sucursalProducto" name="sucursalProducto"  class="form-select" aria-label="Default select example">
+                                    <option selected disabled >Seleccionar sucursal</option>
+                                        @foreach ($sucursales as $sucursal)
+                                            <option value="{{$sucursal->id}}" >{{$sucursal->nombre}}</option>
+                                        @endforeach
+                                      </select>
                                 @error('sucursalProducto')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>

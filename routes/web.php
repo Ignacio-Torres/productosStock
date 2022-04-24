@@ -16,16 +16,9 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/productos/consultar','App\Http\Controllers\gestionProductosController@consultar')->name('consultarProducto');
-
-Route::get('/productos/registrar','App\Http\Controllers\gestionProductosController@mostrarRegistrar')->name('mostrarRegistrarProducto');
-
-Route::post('/productos/guardarRegistro','App\Http\Controllers\gestionProductosController@registrar')->name('registrarProducto');
-
-Route::get('/productos/eliminar','App\Http\Controllers\gestionProductosController@eliminar')->name('eliminarProducto');
-
-Route::get('/productos/actualizar','App\Http\Controllers\gestionProductosController@actualizar')->name('actualizarProducto');
-
+Route::get('/productos/buscar','App\Http\Controllers\gestionProductosController@buscar')->name('productos.buscar');
+Route::post('/productos/consultar','App\Http\Controllers\gestionProductosController@consultar')->name('productos.consultar');
+Route::resource('productos','App\Http\Controllers\gestionProductosController')->names('productos');
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

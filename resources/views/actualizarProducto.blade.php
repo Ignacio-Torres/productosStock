@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@extends('layouts.app')
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Actualizar producto') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('actualizarProducto') }}">
+                    <form method="POST" action="{{ route('productos.update') }}">
                         @csrf
 
                         <div class="row mb-3">
@@ -36,7 +36,12 @@
                         <div class="row mb-3">
                             <label for="categoriaProducto" class="col-md-4 col-form-label text-md-end">{{ __('Categoria del producto') }}</label>
                             <div class="col-md-6">
-                                <input id="categoriaProducto" type="text" class="form-control @error('categoriaProducto') is-invalid @enderror" name="categoriaProducto" value="{{ old('categoriaProducto') }}" required autofocus>
+                                <select class="form-select" aria-label="Default select example">
+                                    <option selected disabled>Seleccionar categoria</option>
+                                    @foreach ($categorias as $categoria)
+                                        <option value="{{$categoria->id}}" >{{$categoria->nombre}}</option>
+                                    @endforeach
+                                  </select>
                                 @error('categoriaProducto')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -47,7 +52,12 @@
                         <div class="row mb-3">
                             <label for="sucursalProducto" class="col-md-4 col-form-label text-md-end">{{ __('Sucursal donde se encuentra el producto') }}</label>
                             <div class="col-md-6">
-                                <input id="sucursalProducto" type="text" class="form-control @error('sucursalProducto') is-invalid @enderror" name="sucursalProducto" value="{{ old('sucursalProducto') }}" required autofocus>
+                                <select>
+                                <option selected disabled>Seleccionar sucursal</option>
+                                    @foreach ($sucursales as $sucursal)
+                                        <option value="{{$sucursal->id}}" >{{$sucursal->nombre}}</option>
+                                    @endforeach
+                                  </select>
                                 @error('sucursalProducto')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>

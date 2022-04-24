@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Sucursal extends Model
 {
+    public $timestamps = false;
     protected $table = 'sucursales';
-    protected $primaryKey ='id';    
+    protected $primaryKey ='id';  
+    protected $fillable = [
+        'nombre',
+    ];  
 }
