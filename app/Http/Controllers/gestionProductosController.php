@@ -49,16 +49,17 @@ class gestionProductosController extends Controller
             case "2":
                 $sucursal=Sucursal::where('nombre',$data['textoBuscar'])->first();
                 $stockProducto = StockProducto::where('idSucursal',$sucursal['id'])->get();                
-                $productos = [];
+                $productos = [];                
                 foreach($stockProducto as $item){
+                    $stock=[];
                     $producto = Producto::find($item['idproducto']);                     
                     $categoria=Categoria::find($producto['idCategoria']);                     
                     $item['nombreSucursal'] = $sucursal['nombre'];
-                    $producto['stock'] = $item; 
+                    array_push($stock,$item);                
+                    $producto['stock'] = $stock; 
                     $producto['nombreCategoria'] = $categoria['nombre'];
                     array_push($productos,$producto);       
-                }               
-                
+                }    
                 break;
             $sucursales = Sucursal::all();
         }
