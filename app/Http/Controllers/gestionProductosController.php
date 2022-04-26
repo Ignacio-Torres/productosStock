@@ -15,9 +15,54 @@ class gestionProductosController extends Controller
         $sucursales = Sucursal::all();
         return view('consultarProducto', compact('categorias','sucursales'));
     }
-    public function mostrarResultadoBusqueda(Request $request){
-
-        return view();
+    public function consultar(Request $request){        
+        $sucursales = Sucursal::all();
+        $data = $request->validate([
+            'opcionBuscar' => ['required'],
+            'textoBuscar' => ['required','max:255'],
+        ]);
+        switch ($data['opcionBuscar']) {
+            case "0":
+                $categoria=Categoria::where('nombre',$data['textoBuscar'])->first();
+                $productos=Producto::where('idCategoria',$categoria['id'])->get();                
+                foreach($productos as $producto){
+                    $stockProducto = StockProducto::where('idproducto',$producto['id'])->get();
+                    foreach($stockProducto as $item){
+                        $item['nombreSucursal'] = Sucursal::find($item['idSucursal'])['nombre'];
+                    }
+                    $producto['stock'] = $stockProducto;
+                    $producto['nombreCategoria'] = $categoria['nombre'];
+                }                
+                break;
+            case "1":   
+                $productos = [];             
+                $producto=Producto::where('nombre',$data['textoBuscar'])->first(); 
+                $categoria=Categoria::find($producto['idCategoria'])['nombre'];               
+                $stockProducto = StockProducto::where('idproducto',$producto['id'])->get();
+                foreach($stockProducto as $item){
+                    $item['nombreSucursal'] = Sucursal::find($item['idSucursal'])['nombre'];
+                }
+                $producto['stock'] = $stockProducto;
+                $producto['nombreCategoria'] = $categoria;
+                array_push($productos,$producto);
+                break;
+            case "2":
+                $sucursal=Sucursal::where('nombre',$data['textoBuscar'])->first();
+                $stockProducto = StockProducto::where('idSucursal',$sucursal['id'])->get();                
+                $productos = [];
+                foreach($stockProducto as $item){
+                    $producto = Producto::find($item['idproducto']);                     
+                    $categoria=Categoria::find($producto['idCategoria']);                     
+                    $item['nombreSucursal'] = $sucursal['nombre'];
+                    $producto['stock'] = $item; 
+                    $producto['nombreCategoria'] = $categoria['nombre'];
+                    array_push($productos,$producto);       
+                }               
+                
+                break;
+            $sucursales = Sucursal::all();
+        }
+        return view('resultadoBusquedaProducto',compact('productos','sucursales'));
     }
     public function create(){
         $categorias = Categoria::all();
@@ -26,7 +71,7 @@ class gestionProductosController extends Controller
     }
     public function store(Request $request){
         
-            $data = $request->validate([
+        $data = $request->validate([
                 'nombreProducto' => ['required','unique:productos,nombre'],
                 'codigoProducto' => ['required','unique:productos,codigoUnico'],
                 'categoriaProducto' => ['required'],
@@ -34,7 +79,7 @@ class gestionProductosController extends Controller
                 'descripcionProducto' => ['required'],
                 'cantidadProducto' => ['required', 'numeric'],
                 'precioProducto' => ['required', 'numeric'],
-            ]);
+        ]);
         $producto = Producto::create([
             'nombre' => $data['nombreProducto'],
             'codigoUnico' => $data['codigoProducto'],
