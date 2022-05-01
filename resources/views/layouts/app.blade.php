@@ -43,6 +43,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('productos.buscar') }}">{{ __('Buscar producto') }}</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('productos.eliminar') }}">{{ __('Eliminar/desactivar producto') }}</a>
+                        </li>
                         {{-- <li class="nav-item">
                             <a class="nav-link" href="{{ route('productos.edit') }}">{{ __('Modificar producto') }}</a>
                         </li> --}}

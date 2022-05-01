@@ -14,10 +14,13 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth/login');
 });
 Route::get('/productos/buscar','App\Http\Controllers\gestionProductosController@buscar')->name('productos.buscar');
 Route::post('/productos/consultar','App\Http\Controllers\gestionProductosController@consultar')->name('productos.consultar');
+Route::get('/productos/eliminar','App\Http\Controllers\gestionProductosController@eliminar')->name('productos.eliminar');
+Route::post('/productos/delete','App\Http\Controllers\gestionProductosController@delete')->name('productos.delete');
+Route::post('/productos/desactivar','App\Http\Controllers\gestionProductosController@desactivar')->name('productos.desactivar');
 Route::resource('productos','App\Http\Controllers\gestionProductosController')->names('productos');
 Auth::routes();
 

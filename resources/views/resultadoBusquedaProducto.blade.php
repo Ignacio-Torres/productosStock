@@ -27,16 +27,21 @@
       <td>{{$producto['nombre']}}</td>
       <td>{{$producto['nombreCategoria']}}</td>
       <td>{{$producto['descripcion']}}</td>
+      @foreach($producto['stock'] as $stock) 
       @foreach ($sucursales as $sucursal)
-        @if($producto['stock'][0]['idSucursal']==$sucursal['id'])
-          <td>{{$producto['stock'][0]['cantidad']}}</td>
-          <td>{{$producto['stock'][0]['precio']}}</td>
-          <td>{{($producto['stock'][0]['activo']) ? 'True':'False';}}</td>
-        @else
-          <td>--</td>
-          <td>--</td>
-          <td>--</td>
-        @endif
+          @if($stock['idSucursal']==$sucursal['id'])
+            <td>{{$stock['cantidad']}}</td>
+            <td>{{$stock['precio']}}</td>
+            <td>{{($stock['activo']) ? 'True':'False'}}</td>
+            <?php;
+                array_push($sucursales, $sucursal);?>
+            @break
+          @else
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+          @endif
+        @endforeach
       @endforeach
           <tr>   
     </tr>
