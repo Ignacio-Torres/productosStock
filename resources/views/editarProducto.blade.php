@@ -7,13 +7,12 @@
                 <div class="card-header">{{ __('Actualizar producto') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('productos.update') }}">
+                    <form method="POST" action="{{ route('productos.update',$stock['id']) }}">
                         @csrf
-
                         <div class="row mb-3">
                             <label for="nombreProducto" class="col-md-4 col-form-label text-md-end">{{ __('Nombre del producto') }}</label>
                             <div class="col-md-6">
-                                <input id="nombreProducto" type="text" class="form-control @error('nombreProducto') is-invalid @enderror" name="nombreProducto" value="{{ old('nombreProducto') }}" required autofocus>
+                                <input id="nombreProducto" type="text" class="form-control @error('nombreProducto') is-invalid @enderror" name="nombreProducto" value="{{$producto['nombre']}}" required autofocus>
                                 @error('nombreProducto')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -24,7 +23,7 @@
                         <div class="row mb-3">
                             <label for="codigoProducto" class="col-md-4 col-form-label text-md-end">{{ __('Codigo unico del producto') }}</label>
                             <div class="col-md-6">
-                                <input id="codigoProducto" type="text" class="form-control @error('codigoProducto') is-invalid @enderror" name="codigoProducto" value="{{ old('codigoProducto') }}" required autofocus>
+                                <input id="codigoProducto" type="text" class="form-control @error('codigoProducto') is-invalid @enderror" name="codigoProducto" value="{{ $producto['codigoUnico'] }}" required autofocus readonly>
                                 @error('codigoProducto')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -36,9 +35,10 @@
                             <label for="categoriaProducto" class="col-md-4 col-form-label text-md-end">{{ __('Categoria del producto') }}</label>
                             <div class="col-md-6">
                                 <select class="form-select" aria-label="Default select example">
-                                    <option selected disabled>Seleccionar categoria</option>
                                     @foreach ($categorias as $categoria)
-                                        <option value="{{$categoria->id}}" >{{$categoria->nombre}}</option>
+                                    @if ($categoria['id']==$producto['idCategoria'])
+                                        <option selected value="{{$categoria->id}}" >{{$categoria->nombre}}</option>
+                                    @endif 
                                     @endforeach
                                   </select>
                                 @error('categoriaProducto')
@@ -51,10 +51,12 @@
                         <div class="row mb-3">
                             <label for="sucursalProducto" class="col-md-4 col-form-label text-md-end">{{ __('Sucursal donde se encuentra el producto') }}</label>
                             <div class="col-md-6">
-                                <select>
-                                <option selected disabled>Seleccionar sucursal</option>
+                                <select class="form-select" aria-label="Default select example">
                                     @foreach ($sucursales as $sucursal)
-                                        <option value="{{$sucursal->id}}" >{{$sucursal->nombre}}</option>
+                                    @if ($sucursal['id']==$stock['idSucursal'])
+                                        <option selected value="{{$sucursal->id}}" >{{$sucursal->nombre}}</option>
+                                    @endif
+                                        
                                     @endforeach
                                   </select>
                                 @error('sucursalProducto')
@@ -67,7 +69,7 @@
                         <div class="row mb-3">
                             <label for="descripcionProducto" class="col-md-4 col-form-label text-md-end">{{ __('Descripcion del producto') }}</label>
                             <div class="col-md-6">
-                                <input id="descripcionProducto" type="text" class="form-control @error('descripcionProducto') is-invalid @enderror" name="descripcionProducto" value="{{ old('descripcionProducto') }}" required autofocus>
+                                <input id="descripcionProducto" type="text" class="form-control @error('descripcionProducto') is-invalid @enderror" name="descripcionProducto" value="{{$producto['descripcion']}}" required autofocus>
                                 @error('descripcionProducto')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -78,7 +80,7 @@
                         <div class="row mb-3">
                             <label for="cantidadProducto" class="col-md-4 col-form-label text-md-end">{{ __('Cantidad del producto') }}</label>
                             <div class="col-md-6">
-                                <input id="cantidadProducto" type="number" class="form-control @error('cantidadProducto') is-invalid @enderror" name="cantidadProducto" value="{{ old('cantidadProducto') }}" required autofocus>
+                                <input id="cantidadProducto" type="number" class="form-control @error('cantidadProducto') is-invalid @enderror" name="cantidadProducto" value="{{ $stock['cantidad'] }}" required autofocus readonly>
                                 @error('cantidadProducto')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -89,7 +91,7 @@
                         <div class="row mb-3">
                             <label for="precioProducto" class="col-md-4 col-form-label text-md-end">{{ __('Precio del producto') }}</label>
                             <div class="col-md-6">
-                                <input id="precioProducto" type="number" step="any" class="form-control @error('precioProducto') is-invalid @enderror" name="precioProducto" value="{{ old('precioProducto') }}" required autofocus>
+                                <input id="precioProducto" type="number" step="any" class="form-control @error('precioProducto') is-invalid @enderror" name="precioProducto" value="{{ $stock['precio'] }}" required autofocus>
                                 @error('precioProducto')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
